@@ -40,7 +40,7 @@ public class Playtomic_PlayerScore
 {
 	public string Name;
 	public string FBUserId;
-	public double Points;
+	public long Points;
 	public string Website;
 	public DateTime SDate;
 	public string RDate;
@@ -53,4 +53,31 @@ public class Playtomic_PlayerScore
 		SDate = new DateTime();
 		RDate = "Just now";
 	}	
+	
+	// for JS
+	public void AddCustomData(String field, String data) 
+	{
+    	CustomData.Add(field, data);   
+	}
+	
+	public Hashtable GetCustomDataAsHashtable() 
+	{
+
+    	var result = new Hashtable();
+
+    	foreach (string key in CustomData.Keys) 
+    	{
+    	    result.Add(key, CustomData[key]);
+   		}
+
+    	return result;
+	}
+	
+	public void SetCustomData(Hashtable customDataAsHashtable) 
+	{	
+	    foreach (var key in customDataAsHashtable.Keys)
+    	{
+        	CustomData.Add(key.ToString(), customDataAsHashtable[key].ToString());
+	    }
+	}
 }

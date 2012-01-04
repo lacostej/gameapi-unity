@@ -149,15 +149,32 @@ public class Playtomic_PlayerLevels : Playtomic_Responder
 
 	public IEnumerator List(string mode, int page, int perpage)
 	{
-		return List(mode, page, perpage, false, false, DateTime.MinValue, DateTime.MaxValue);
+		return List(mode, page, perpage, false, false, new Dictionary<String, String>(), DateTime.MinValue, DateTime.MaxValue);
 	}
 	
 	public IEnumerator List(string mode, int page, int perpage, bool includedata, bool includethumbs)
 	{
-		return List(mode, page, perpage, includedata, includethumbs, DateTime.MinValue, DateTime.MaxValue);
+		return List(mode, page, perpage, includedata, includethumbs, new Dictionary<String, String>(), DateTime.MinValue, DateTime.MaxValue);
 	}
 		
 	public IEnumerator List(string mode, int page, int perpage, bool includedata, bool includethumbs, DateTime datemin, DateTime datemax)
+	{
+		return List(mode, page, perpage, includedata, includethumbs, new Dictionary<String, String>(), datemin, datemax);
+	}
+	
+	public IEnumerator List(string mode, int page, int perpage, bool includedata, bool includethumbs, Hashtable customdatahashtable, DateTime datemin, DateTime datemax)
+	{
+		var dict = new Dictionary<String, String>();
+		
+		foreach(var key in customdatahashtable.Keys)
+		{
+			dict.Add(key.ToString(), customdatahashtable[key].ToString());
+		}
+		
+		return List(mode, page, perpage, includedata, includethumbs, dict, datemin, datemax);
+	}
+	
+	public IEnumerator List(string mode, int page, int perpage, bool includedata, bool includethumbs, Dictionary<string,string> customdata, DateTime datemin, DateTime datemax)
 	{
 		var postdata = new Dictionary<String, String>();
 		postdata.Add("mode", mode);
@@ -168,19 +185,24 @@ public class Playtomic_PlayerLevels : Playtomic_Responder
 		postdata.Add("datemin", datemin.ToString("MM/dd/yyyy"));
 		postdata.Add("datemax", datemax.ToString("MM/dd/yyyy"));
 		
-		
-		
-		/*var n = 0;
-		
-		foreach(var key in level.CustomData.Keys)
+		if(customdata != null)
 		{
-			postdata.Add("ckey" + n, key);
-			postdata.Add("cdata" + n, level.CustomData[key]);
-			n++;
-		}*/
+			var n = 0;
 		
-		postdata.Add("filters", "0");
-		 
+			foreach(var key in customdata.Keys)
+			{
+				postdata.Add("ckey" + n, key);
+				postdata.Add("cdata" + n, customdata[key]);
+				n++;
+			}
+			
+			postdata.Add("filters", customdata.Count.ToString());
+		}
+		else
+		{
+			postdata.Add("filters", "0");
+		}
+			
 		string url;
 		WWWForm post;
 		
@@ -221,10 +243,10 @@ public class Playtomic_PlayerLevels : Playtomic_Responder
 				
 				if(item.ContainsKey("CustomData"))
 				{
-					Hashtable customdata = (Hashtable)item["CustomData"];
+					Hashtable cd = (Hashtable)item["CustomData"];
 	
-					foreach(var key in customdata.Keys)
-						level.CustomData.Add((string)key, WWW.UnEscapeURL((string)customdata[key]));
+					foreach(var key in cd)
+						level.CustomData.Add((string)key, WWW.UnEscapeURL((string)cd[key]));
 				}
 				
 				response.Levels.Add(level);

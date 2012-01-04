@@ -188,12 +188,24 @@ public class Playtomic_Leaderboards : Playtomic_Responder
 	
 	public IEnumerator SaveAndList(string table, Playtomic_PlayerScore score, bool highest, string mode, int perpage, bool isglobal)
 	{
-		return SaveAndList(table, score, highest, mode, perpage, isglobal, false, false, null);
+		return SaveAndList(table, score, highest, mode, perpage, isglobal, false, false, new Dictionary<string, string>());
 	}
 	
 	public IEnumerator SaveAndList(string table, Playtomic_PlayerScore score, bool highest, string mode, int perpage, bool isglobal, bool allowduplicates)
 	{
-		return SaveAndList(table, score, highest, mode, perpage, isglobal, allowduplicates, false, null);
+		return SaveAndList(table, score, highest, mode, perpage, isglobal, allowduplicates, false, new Dictionary<string, string>());
+	}
+	
+	public IEnumerator SaveAndList(string table, Playtomic_PlayerScore score, bool highest, string mode, int perpage, bool isglobal, bool allowduplicates, bool facebook, Hashtable customdatahashtable)
+	{
+		var dict = new Dictionary<String, String>();
+		
+		foreach(var key in customdatahashtable.Keys)
+		{
+			dict.Add(key.ToString(), customdatahashtable[key].ToString());
+		}
+		
+		return SaveAndList(table, score, highest, mode, perpage, isglobal, allowduplicates, facebook, dict);
 	}
 	
 	public IEnumerator SaveAndList(string table, Playtomic_PlayerScore score, bool highest, string mode, int perpage, bool isglobal, bool allowduplicates, bool facebook, Dictionary<String, String> customfilters)
@@ -293,17 +305,41 @@ public class Playtomic_Leaderboards : Playtomic_Responder
 	
 	public IEnumerator List(string table, bool highest, string mode, int page, int perpage)
 	{
-		return List(table, highest, mode, page, perpage, false, null, null);
+		return List(table, highest, mode, page, perpage, false, new Dictionary<String, String>(), null);
 	}
 	
 	public IEnumerator List(string table, bool highest, string mode, int page, int perpage, bool facebook)
 	{
-		return List(table, highest, mode, page, perpage, facebook, null, null);
+		return List(table, highest, mode, page, perpage, facebook, new Dictionary<String, String>(), null);
 	}
 		
+	public IEnumerator List(string table, bool highest, string mode, int page, int perpage, bool facebook, Hashtable customdatahashtable)
+	{	
+		var dict = new Dictionary<String, String>();
+		
+		foreach(var key in customdatahashtable.Keys)
+		{
+			dict.Add(key.ToString(), customdatahashtable[key].ToString());
+		}
+				
+		return List(table, highest, mode, page, perpage, facebook, dict, null);
+	}
+	
 	public IEnumerator List(string table, bool highest, string mode, int page, int perpage, bool facebook, Dictionary<String, String> customfilters)
 	{	
 		return List(table, highest, mode, page, perpage, facebook, customfilters, null);
+	}
+	
+	public IEnumerator List(string table, bool highest, string mode, int page, int perpage, bool facebook, Hashtable customdatahashtable, string[] friendslist)
+	{
+		var dict = new Dictionary<String, String>();
+		
+		foreach(var key in customdatahashtable.Keys)
+		{
+			dict.Add(key.ToString(), customdatahashtable[key].ToString());
+		}
+		
+		return List(table, highest, mode, page, perpage, facebook, dict, friendslist);
 	}
 	
 	
@@ -344,8 +380,7 @@ public class Playtomic_Leaderboards : Playtomic_Responder
 		{
 			postdata.Add("fb", "n");
 		}
-		
-		
+			
 		string url;
 		WWWForm post;
 		
