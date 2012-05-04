@@ -31,6 +31,7 @@
 // SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 using UnityEngine;
+using System;
 using System.Collections;
 
 public class PlaytomicTest : MonoBehaviour
@@ -41,10 +42,12 @@ public class PlaytomicTest : MonoBehaviour
 		Debug.Log("Start");
 
 		// tony's test
-		Playtomic.Initialize( 4277, "0c00e714e083408f", "60574a8152ec49ceb1cc61e90441ab" );
-
+		Playtomic.Initialize(4277, "0c00e714e083408f", "60574a8152ec49ceb1cc61e90441ab" );
+		Playtomic.SetSSL();
 		Playtomic.Log.View();
-		Playtomic.Log.Play();
+		
+		Debug.Log("Sent view");
+		//Playtomic.Log.Play();
 
 		// ------
 		
@@ -69,8 +72,11 @@ public class PlaytomicTest : MonoBehaviour
 		//StartCoroutine(ListScores());
 		
 		// parse
-		StartCoroutine(SaveParseObject());
-		StartCoroutine(FindParseObject());
+		//StartCoroutine(SaveParseObject());
+		//StartCoroutine(FindParseObject());
+		
+		Debug.Log("Dividing by 0");
+		var z = 1 / int.Parse("0");
 	}
 	
 	// Parse

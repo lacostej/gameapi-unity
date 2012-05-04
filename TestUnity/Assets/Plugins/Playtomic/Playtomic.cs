@@ -35,17 +35,18 @@ using System;
 
 public class Playtomic : MonoBehaviour
 {
-	private long gameid;
-	private string gameguid;
-	private string sourceUrl;
-	private Playtomic_Log log;
-	private Playtomic_Data data;
-	private Playtomic_Leaderboards leaderboards;
-	private Playtomic_PlayerLevels playerlevels;
-	private Playtomic_GeoIP geoip;
-	private Playtomic_Link link;
-	private Playtomic_GameVars gamevars;
-	private Playtomic_Parse parse;
+	private long _gameid;
+	private string _gameguid;
+	private string _sourceUrl;
+	private bool _useSSL;
+	private Playtomic_Log _log;
+	private Playtomic_Data _data;
+	private Playtomic_Leaderboards _leaderboards;
+	private Playtomic_PlayerLevels _playerlevels;
+	private Playtomic_GeoIP _geoip;
+	private Playtomic_Link _link;
+	private Playtomic_GameVars _gamevars;
+	private Playtomic_Parse _parse;
 	
 	private static Playtomic _instance = null;
 	
@@ -70,17 +71,17 @@ public class Playtomic : MonoBehaviour
 		GameObject.DontDestroyOnLoad(go);
 			
 		_instance = go.AddComponent("Playtomic") as Playtomic;
-		_instance.gameid = gameid;
-		_instance.gameguid = gameguid;
-		_instance.sourceUrl = string.IsNullOrEmpty(Application.absoluteURL) ? "http://localhost/" : Application.absoluteURL;
-		_instance.log = new Playtomic_Log();
-		_instance.data = new Playtomic_Data();
-		_instance.leaderboards = new Playtomic_Leaderboards();
-		_instance.playerlevels = new Playtomic_PlayerLevels();
-		_instance.geoip = new Playtomic_GeoIP();
-		_instance.link = new Playtomic_Link();
-		_instance.gamevars = new Playtomic_GameVars();
-		_instance.parse = new Playtomic_Parse();
+		_instance._gameid = gameid;
+		_instance._gameguid = gameguid;
+		_instance._sourceUrl = string.IsNullOrEmpty(Application.absoluteURL) ? "http://localhost/" : Application.absoluteURL;
+		_instance._log = new Playtomic_Log();
+		_instance._data = new Playtomic_Data();
+		_instance._leaderboards = new Playtomic_Leaderboards();
+		_instance._playerlevels = new Playtomic_PlayerLevels();
+		_instance._geoip = new Playtomic_GeoIP();
+		_instance._link = new Playtomic_Link();
+		_instance._gamevars = new Playtomic_GameVars();
+		_instance._parse = new Playtomic_Parse();
 		
 		Playtomic_Request.Initialise();
 		Playtomic_Data.Initialise(apikey);
@@ -89,21 +90,54 @@ public class Playtomic : MonoBehaviour
 		Playtomic_GeoIP.Initialise(apikey);
 		Playtomic_PlayerLevels.Initialise(apikey);
 		Playtomic_Parse.Initialise(apikey);
+		
+		//Application.ThreadException += new System.Threading.ThreadExceptionEventHandler(Application_ThreadException);
+	}
+	
+	public static void SetSSL()
+	{
+		if(_instance == null)
+		{
+			Debug.Log("Initialize the API before you SetSSL");
+			return;
+		}
+		
+		_instance._useSSL = true;
+		Playtomic_Request.Initialise();
+		Debug.Log("You are now using SSL for your api requests.  This feature is for premium users only, if your account is not premium the data you send will be ignored.");
+	}
+	
+	public static void LogException( object sender, UnhandledExceptionEventArgs e)
+	{
+    	var exception = e.ExceptionObject.ToString();
+    	Debug.Log("**** EXCEPTION ****");
+    	Debug.Log(exception);
+	}
+	
+	/*private static void Application_ThreadException( object sender, System.Threading.ThreadExceptionEventArgs e )
+	{
+		var exception = e.Exception.ToString();
+		Debug.Log(exception);
+	}*/
+	
+	public static bool UseSSL
+	{
+		get { return _instance._useSSL; }
 	}
 	
 	public static long GameId
 	{
-		get { return _instance.gameid; }
+		get { return _instance._gameid; }
 	}
 	
 	public static string GameGuid
 	{
-		get { return _instance.gameguid; }
+		get { return _instance._gameguid; }
 	}
 	
 	public static string SourceUrl
 	{
-		get { return _instance.sourceUrl; }
+		get { return _instance._sourceUrl; }
 	}
 	
 	public static Playtomic API
@@ -113,41 +147,41 @@ public class Playtomic : MonoBehaviour
 	
 	public static Playtomic_Log Log
 	{
-		get { return _instance.log; }
+		get { return _instance._log; }
 	}
 	
 	public static Playtomic_Data Data
 	{
-		get { return _instance.data; }
+		get { return _instance._data; }
 	}
 	
 	public static Playtomic_Leaderboards Leaderboards
 	{
-		get  { return _instance.leaderboards; }
+		get  { return _instance._leaderboards; }
 	}
 	
 	public static Playtomic_PlayerLevels PlayerLevels
 	{
-		get { return _instance.playerlevels; }
+		get { return _instance._playerlevels; }
 	}
 	
 	public static Playtomic_GeoIP GeoIP
 	{
-		get { return _instance.geoip; }
+		get { return _instance._geoip; }
 	}
 	
 	public static Playtomic_Link Link
 	{
-		get { return _instance.link; }
+		get { return _instance._link; }
 	}
 	
 	public static Playtomic_GameVars GameVars
 	{
-		get { return _instance.gamevars; }
+		get { return _instance._gamevars; }
 	}
 	
 	public static Playtomic_Parse Parse
 	{
-		get { return _instance.parse; }
+		get { return _instance._parse; }
 	}
 }

@@ -12,7 +12,7 @@ internal class Playtomic_Request
 	
 	public static void Initialise()
 	{
-		URLStub = "http://g" + Playtomic.GameGuid + ".api.playtomic.com/";
+		URLStub = (Playtomic.UseSSL ? "https://g" : "http://g") + Playtomic.GameGuid + ".api.playtomic.com/";
 		URLTail = "swfid=" + Playtomic.GameId + "&js=y";
 		URL = URLStub + "v3/api.aspx?" + URLTail;
 	}
@@ -26,11 +26,10 @@ internal class Playtomic_Request
 		var r = new System.Random();
 		var turl = URLStub + "tracker/q.aspx?q=" + data + "&swfid=" + Playtomic.GameId + "&url=" + Escape(Playtomic.SourceUrl) + "&" + r.Next(1000000) + "Z";
 		
-		
 		//turl = "http://g7bf0867af8a64758.api.playtomic.com/tracker/q.aspx?q=p/1~pls/Tutorial+1+targets~lc/Starts/Tutorial+1+targets~plw/Tutorial+1+targets~lc/Completed/Tutorial+1+targets~la/Elapsed+Time/Tutorial+1+targets/16.9799880981445&swfid=4526&url=http%3A%2F%2Flocalhost%2F&508820Z";
-		Debug.Log("Sending data to " + turl);
+		//Debug.Log("Sending data to " + turl);
 		
-		WWW www = new WWW(turl, post);
+		var www = new WWW(turl, post);
 		yield return www;
 		
 		Debug.Log(www.text);

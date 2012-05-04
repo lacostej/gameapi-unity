@@ -50,6 +50,8 @@
 	</Reference>
   </ItemGroup>
   <ItemGroup>
+     <Compile Include="Assets\HeatmapEmitter\background\HeatmapEmitter.cs" />
+     <None Include="Assets\HeatmapEmitter\readme.txt" />
      <None Include="Assets\Plugins\Playtomic\LICENSE.txt" />
      <Compile Include="Assets\Plugins\Playtomic\PFObject.cs" />
      <Compile Include="Assets\Plugins\Playtomic\PFPointer.cs" />

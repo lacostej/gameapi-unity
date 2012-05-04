@@ -19,10 +19,10 @@
       <File FileName="Assets/Plugins/Playtomic/Playtomic_PlayerLevel.cs" Line="1" Column="1" />
       <File FileName="Assets/Plugins/Playtomic/Playtomic_PlayerLevels.cs" Line="1" Column="1" />
       <File FileName="Assets/Plugins/Playtomic/Playtomic_PlayerScore.cs" Line="1" Column="1" />
-      <File FileName="Assets/Plugins/Playtomic/Playtomic_Request.cs" Line="31" Column="3" />
+      <File FileName="Assets/Plugins/Playtomic/Playtomic_Request.cs" Line="33" Column="1" />
       <File FileName="Assets/Plugins/Playtomic/Playtomic_Responder.cs" Line="1" Column="1" />
       <File FileName="Assets/Plugins/Playtomic/Playtomic_Response.cs" Line="60" Column="32" />
-      <File FileName="Assets/PlaytomicTest.cs" Line="44" Column="86" />
+      <File FileName="Assets/PlaytomicTest.cs" Line="44" Column="17" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
