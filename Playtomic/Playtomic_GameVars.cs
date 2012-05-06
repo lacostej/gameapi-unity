@@ -43,11 +43,13 @@ public class Playtomic_GameVars : Playtomic_Responder
 	
 	private static string SECTION;
 	private static string LOAD;
+	private static string LOADSINGLE;
 	
 	internal static void Initialise(string apikey)
 	{
 		SECTION = Playtomic_Encode.MD5("gamevars-" + apikey);
 		LOAD = Playtomic_Encode.MD5("gamevars-load-" + apikey);
+		LOADSINGLE = Playtomic_Encode.MD5("gamevars-loadsingle-" + apikey);
 	}
 	
 	public IEnumerator Load()
@@ -75,5 +77,35 @@ public class Playtomic_GameVars : Playtomic_Responder
 		}
 		
 		SetResponse(response, "Load");
+	}
+	
+	public IEnumerator LoadSingle(string name)
+	{
+		string url;
+		WWWForm post;
+		
+		var postdata = new Dictionary<String, String>();
+		postdata.Add("name", name);
+		
+		Playtomic_Request.Prepare(SECTION, LOADSINGLE, postdata, out url, out post);
+		
+		WWW www = new WWW(url, post);
+		yield return www;
+		
+		var response = Playtomic_Request.Process(www);
+	
+		if (response.Success)
+		{
+			var data = (Hashtable)response.JSON;
+
+			foreach(string key in data.Keys)
+			{
+				var vname = WWW.UnEscapeURL(key);
+				var value = WWW.UnEscapeURL((string)data[key]);
+				response.Data.Add(vname, value);
+			}
+		}
+		
+		SetResponse(response, "LoadSingle");
 	}
 }
