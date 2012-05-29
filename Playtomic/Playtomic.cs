@@ -47,6 +47,7 @@ public class Playtomic : MonoBehaviour
 	private Playtomic_Link _link;
 	private Playtomic_GameVars _gamevars;
 	private Playtomic_Parse _parse;
+	private Playtomic_RRequest _referrer;
 	
 	private static Playtomic _instance = null;
 	
@@ -82,6 +83,7 @@ public class Playtomic : MonoBehaviour
 		_instance._link = new Playtomic_Link();
 		_instance._gamevars = new Playtomic_GameVars();
 		_instance._parse = new Playtomic_Parse();
+		_instance._referrer = new  Playtomic_RRequest();
 		
 		Playtomic_Request.Initialise();
 		Playtomic_Data.Initialise(apikey);
@@ -90,6 +92,7 @@ public class Playtomic : MonoBehaviour
 		Playtomic_GeoIP.Initialise(apikey);
 		Playtomic_PlayerLevels.Initialise(apikey);
 		Playtomic_Parse.Initialise(apikey);
+		Playtomic_RRequest.Initialise();
 		
 		//Application.ThreadException += new System.Threading.ThreadExceptionEventHandler(Application_ThreadException);
 	}
