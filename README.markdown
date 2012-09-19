@@ -86,35 +86,35 @@ and average-value metrics.
 - Ranged-value metrics track multiple values across a single event across levels
 - Average-value metrics track the average of something across levels
 
-	Playtomic.Log.LevelCounterMetric(name, level, unique)
+		Playtomic.Log.LevelCounterMetric(name, level, unique)
 
-		name = your metric name
-		level = either a level number (int > 0) or a level name
-		unique = optional, only count unique-per-view occurrences
+			name = your metric name
+			level = either a level number (int > 0) or a level name
+			unique = optional, only count unique-per-view occurrences
 
-	Playtomic.Log.LevelRangedMetric(name, level, value, unique)
+		Playtomic.Log.LevelRangedMetric(name, level, value, unique)
 
-		name = your metric name
-		level = either a level number (int > 0) or a level name
-		value = the value you want to track
-		unique = optional, only count unique-per-view occurrences 
+			name = your metric name
+			level = either a level number (int > 0) or a level name
+			value = the value you want to track
+			unique = optional, only count unique-per-view occurrences 
 
 
-	Playtomic.Log.LevelAverageMetric(name, level, value, unique)
-		name = your metric name
-		level = either a level number (int > 0) or a level name
-		value = the value you want to track
-		unique = optional, only count unique-per-view occurrences 
+		Playtomic.Log.LevelAverageMetric(name, level, value, unique)
+			name = your metric name
+			level = either a level number (int > 0) or a level name
+			value = the value you want to track
+			unique = optional, only count unique-per-view occurrences 
 
 #### Link tracking
 Link tracking can give you information on how many people click the links 
 in your games, including (Flash only) identifying sites that block links.
 
-Playtomic.Link.Open(url, name, group)
+	Playtomic.Link.Open(url, name, group)
 
-	url = "https://playtomic.com/"
-	name = link name
-	group = specify the group name for this link (eg "sponsorlinks")
+		url = "https://playtomic.com/"
+		name = link name
+		group = specify the group name for this link (eg "sponsorlinks")
 
 When you track links it automatically tracks the source and country for deep 
 analysis in the dashboard, and it automatically tracks domain totals so if 
