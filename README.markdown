@@ -86,26 +86,26 @@ and average-value metrics.
 - Ranged-value metrics track multiple values across a single event across levels
 - Average-value metrics track the average of something across levels
 
-	Playtomic.Log.LevelCounterMetric(name, level, unique)
+		Playtomic.Log.LevelCounterMetric(name, level, unique)
 
-		name = your metric name
-		level = either a level number (int > 0) or a level name
-		unique = optional, only count unique-per-view occurrences
+			name = your metric name
+			level = either a level number (int > 0) or a level name
+			unique = optional, only count unique-per-view occurrences
 
-	Playtomic.Log.LevelRangedMetric(name, level, value, unique)
+		Playtomic.Log.LevelRangedMetric(name, level, value, unique)
 
-		name = your metric name
-		level = either a level number (int > 0) or a level name
-		value = the value you want to track
-		unique = optional, only count unique-per-view occurrences 
+			name = your metric name
+			level = either a level number (int > 0) or a level name
+			value = the value you want to track
+			unique = optional, only count unique-per-view occurrences 
 
 
-	Playtomic.Log.LevelAverageMetric(name, level, value, unique)
+		Playtomic.Log.LevelAverageMetric(name, level, value, unique)
 	
-		name = your metric name
-		level = either a level number (int > 0) or a level name
-		value = the value you want to track
-		unique = optional, only count unique-per-view occurrences 
+			name = your metric name
+			level = either a level number (int > 0) or a level name
+			value = the value you want to track
+			unique = optional, only count unique-per-view occurrences 
 
 #### Link tracking
 Link tracking can give you information on how many people click the links 
