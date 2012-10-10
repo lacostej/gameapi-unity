@@ -273,10 +273,10 @@ public class Playtomic_Leaderboards : Playtomic_Responder
 				
 				var sscore = new Playtomic_PlayerScore();
 				sscore.Name = WWW.UnEscapeURL((string)item["Name"]);
-				sscore.Points = (int)(double)item["Points"];
+				sscore.Points = long.Parse (item["Points"].ToString());
 				sscore.SDate = DateTime.Parse((string)item["SDate"]);
 				sscore.RDate = WWW.UnEscapeURL((string)item["RDate"]);
-				sscore.Rank = (long)(double)item["Rank"];
+				sscore.Rank = long.Parse (item["Rank"].ToString());
 				
 				if(item.ContainsKey("SubmittedOrBest"))
 					sscore.SubmittedOrBest = item["SubmittedOrBest"].ToString() == "true";
@@ -399,10 +399,10 @@ public class Playtomic_Leaderboards : Playtomic_Responder
 				
 				var sscore = new Playtomic_PlayerScore();
 				sscore.Name = WWW.UnEscapeURL((string)item["Name"]);
-				sscore.Points = (int)(double)item["Points"];
+				sscore.Points = long.Parse (item["Points"].ToString());
 				sscore.SDate = DateTime.Parse((string)item["SDate"]);
 				sscore.RDate = WWW.UnEscapeURL((string)item["RDate"]);
-				sscore.Rank = (long)(double)item["Rank"];
+				sscore.Rank = long.Parse (item["Rank"].ToString());
 				
 				if(item.ContainsKey("CustomData"))
 				{
