@@ -1,3 +1,13 @@
+Temp
+Library
+target
+test-results
+obj
+*.csproj
+*.pidb
+*.sln
+*.suo
+*.userprefs
 .DS_Store
 *.fla
 *.swf
