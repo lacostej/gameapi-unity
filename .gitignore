@@ -1,8 +1,5 @@
 Temp
 Library
-target
-test-results
-obj
 *.csproj
 *.pidb
 *.sln
