@@ -22,6 +22,10 @@ Copyright (c) 2011 Playtomic Inc.  Playtomic APIs and SDKs are licensed
 under the MIT license.  Certain portions may come from 3rd parties and 
 carry their own licensing terms and are referenced where applicable.
 */ 
+#define WWW_SUPPORT
+#if UNITY_FLASH
+#undef WWW_SUPPORT
+#endif
 
 using UnityEngine;
 using System.Collections;
@@ -30,6 +34,7 @@ public class Test : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
+#if WWW_SUPPORT
 		Debug.Log("Starting Test");
 
 		
@@ -63,8 +68,10 @@ public class Test : MonoBehaviour {
 		StartCoroutine(SaveParseObject());
 		StartCoroutine(FindParseObject());
 		*/
+#endif
 	}
-	
+
+#if WWW_SUPPORT	
 	// Parse
 	private IEnumerator SaveParseObject()
 	{
@@ -280,7 +287,7 @@ public class Test : MonoBehaviour {
 			Debug.Log("Score list failed to load because of " + response.ErrorCode + ": " + response.ErrorDescription);
 		}
 	}
-	
+#endif	
 	// Update is called once per frame
 	void Update () {
 	

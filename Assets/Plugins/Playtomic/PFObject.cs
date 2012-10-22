@@ -31,7 +31,11 @@ Copyright (c) 2011 Playtomic Inc.  Playtomic APIs and SDKs are licensed
 under the MIT license.  Certain portions may come from 3rd parties and 
 carry their own licensing terms and are referenced where applicable.
 */ 
-
+#define WWW_SUPPORT
+#if UNITY_FLASH
+#undef WWW_SUPPORT
+#endif
+#if WWW_SUPPORT
 using System;
 using System.Collections.Generic;
 
@@ -47,3 +51,4 @@ public class PFObject
 	public DateTime CreatedAt;
 	public String Password;
 }
+#endif
