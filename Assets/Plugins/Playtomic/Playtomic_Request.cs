@@ -98,7 +98,7 @@ internal class Playtomic_Request
 		if(www == null)
 			return Playtomic_Response.GeneralError(1);
 		
-		if (www.error != null)
+		if (!string.IsNullOrEmpty(www.error))
 			return Playtomic_Response.GeneralError(www.error);
 
 		if (string.IsNullOrEmpty(www.text))
