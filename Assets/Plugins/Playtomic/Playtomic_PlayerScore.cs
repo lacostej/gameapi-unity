@@ -26,6 +26,10 @@ carry their own licensing terms and are referenced where applicable.
 #if UNITY_FLASH
 #undef WWW_SUPPORT
 #endif
+
+// uncomment if you want to expose legacy API
+#define EXPOSE_LEGACY_API
+
 #if WWW_SUPPORT
 
 using UnityEngine;
@@ -57,7 +61,8 @@ public class Playtomic_PlayerScore
 	{
     	CustomData.Add(field, data);   
 	}
-	
+
+#if EXPOSE_LEGACY_API
 	public Hashtable GetCustomDataAsHashtable() 
 	{
 
@@ -78,5 +83,6 @@ public class Playtomic_PlayerScore
         	CustomData.Add(key.ToString(), customDataAsHashtable[key].ToString());
 	    }
 	}
+#endif // EXPOSE_LEGACY_API
 }
 #endif

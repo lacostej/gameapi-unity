@@ -74,7 +74,7 @@ public class Playtomic_Parse : Playtomic_Responder
 	
 		if (response.Success)
 		{
-			var data = (Hashtable)response.JSON;
+			var data = (Dictionary<string,object>)response.JSON;
 			pobject.ObjectId = (string)data["id"];
 			pobject.CreatedAt = DateTime.Parse((string)data["created"]);
 			pobject.UpdatedAt = DateTime.Parse((string)data["updated"]);
@@ -125,23 +125,23 @@ public class Playtomic_Parse : Playtomic_Responder
 			po.CreatedAt = DateTime.Parse((string)data["created"]);
 			po.UpdatedAt = DateTime.Parse((string)data["updated"]);
 			
-			var fields = (Hashtable)data["fields"];
+			var fields = (Dictionary<string,object>)data["fields"];
 			
-			foreach(var key in fields.Keys)
+			foreach(KeyValuePair<string, object> kvp in fields)
 			{
-				po.Data.Add((string)key, (string)fields[key]);
+				po.Data.Add(kvp.Key, (string)kvp.Value);
 			}
 			
-			var pointers = (Hashtable)data["pointers"];
+			var pointers = (Dictionary<string,object>)data["pointers"];
 			
-			foreach(var key in pointers.Keys)
+			foreach(KeyValuePair<string, object> kvp in pointers)
 			{
-				var pdata = (ArrayList)pointers[key];
+				var pdata = (List<object>)kvp.Value;
 				var pchild = new PFObject();
 				pchild.ObjectId = (string)pdata[0];
 				pchild.ClassName = (string)pdata[1];
 				
-				po.Pointers.Add(new PFPointer((string)key, pchild));
+				po.Pointers.Add(new PFPointer(kvp.Key, pchild));
 			}
 			
 			response.PObject = po;
@@ -183,7 +183,7 @@ public class Playtomic_Parse : Playtomic_Responder
 			response.PObjects = new List<PFObject>();
 			var array = response.ARRAY;
 			
-			foreach(Hashtable data in array)
+			foreach(Dictionary<string,object> data in array)
 			{
 				var po = new PFObject();
 				po.ClassName = (string)data["classname"];
@@ -192,23 +192,23 @@ public class Playtomic_Parse : Playtomic_Responder
 				po.CreatedAt = DateTime.Parse((string)data["created"]);
 				po.UpdatedAt = DateTime.Parse((string)data["updated"]);
 				
-				var fields = (Hashtable)data["fields"];
+				var fields = (Dictionary<string,object>)data["fields"];
 				
-				foreach(var key in fields.Keys)
+				foreach(KeyValuePair<string,object> kvp in fields)
 				{
-					po.Data.Add((string)key, (string)fields[key]);
+					po.Data.Add(kvp.Key, (string)kvp.Value);
 				}
 				
-				var pointers = (Hashtable)data["pointers"];
+				var pointers = (Dictionary<string,object>)data["pointers"];
 				
-				foreach(var key in pointers.Keys)
+				foreach(KeyValuePair<string,object> kvp in pointers)
 				{
-					var pdata = (ArrayList)pointers[key];
+					var pdata = (List<object>)kvp.Value;
 					var pchild = new PFObject();
 					pchild.ObjectId = (string)pdata[0];
 					pchild.ClassName = (string)pdata[1];
 					
-					po.Pointers.Add(new PFPointer((string)key, pchild));
+					po.Pointers.Add(new PFPointer(kvp.Key, pchild));
 				}
 				
 				response.PObjects.Add(po);

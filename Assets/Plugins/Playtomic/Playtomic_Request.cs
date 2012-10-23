@@ -72,7 +72,7 @@ internal class Playtomic_Request
 		var timestamp = (DateTime.Now.Subtract(new DateTime(1970, 1, 1, 0, 0, 0))).TotalSeconds.ToString();
 		var nonce = Playtomic_Encode.MD5(timestamp + Playtomic.SourceUrl + Playtomic.GameGuid);
 	
-		var pd = new ArrayList();
+		var pd = new List<string>();
 		pd.Add("nonce=" + nonce);
 		pd.Add("timestamp=" + timestamp);
 		
@@ -104,7 +104,7 @@ internal class Playtomic_Request
 		if (string.IsNullOrEmpty(www.text))
 			return Playtomic_Response.Error(1);
 		
-		var results = (Hashtable)Playtomic_JSON.JsonDecode(www.text);
+		var results = (Dictionary<string,object>)Playtomic_JSON.JsonDecode(www.text);
 		
 		if(!results.ContainsKey("Status") || !results.ContainsKey("ErrorCode"))
 			return Playtomic_Response.GeneralError(1);
@@ -115,19 +115,19 @@ internal class Playtomic_Request
 		
 		if(response.Success && results.ContainsKey("Data"))
 		{
-			if(results["Data"] is Hashtable)
-				response.JSON = (Hashtable)results["Data"];
+			if(results["Data"] is Dictionary<string,object>)
+				response.JSON = (Dictionary<string,object>)results["Data"];
 			
-			if(results["Data"] is ArrayList)
-				response.ARRAY = (ArrayList)results["Data"];
+			if(results["Data"] is List<object>)
+				response.ARRAY = (List<object>)results["Data"];
 		}
 		
 		return response;
 	}
 	
-	private static void GenerateKey(string name, string key, ref ArrayList arr)
+	private static void GenerateKey(string name, string key, ref List<string> arr)
 	{
-		var strarray = (string[]) arr.ToArray(typeof(string));
+		var strarray = (string[]) arr.ToArray();
 		Array.Sort(strarray);
 		
 		var joined = "";

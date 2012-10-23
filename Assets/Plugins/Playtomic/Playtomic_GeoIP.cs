@@ -62,12 +62,12 @@ public class Playtomic_GeoIP : Playtomic_Responder
 	
 		if (response.Success)
 		{
-			var data = (Hashtable)response.JSON;
+			var data = (Dictionary<string,object>)response.JSON;
 
-			foreach(string key in data.Keys)
+			foreach(KeyValuePair<string,object> kvp in data)
 			{
-				var name = WWW.UnEscapeURL(key);
-				var value = WWW.UnEscapeURL((string)data[key]);
+				var name = WWW.UnEscapeURL(kvp.Key);
+				var value = WWW.UnEscapeURL((string)kvp.Value);
 				response.Data.Add(name, value);
 			}
 		}

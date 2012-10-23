@@ -37,8 +37,8 @@ public class Playtomic_Response
 	public bool Success;
 	public int ErrorCode;
 	public string ErrorMessage;
-	public Hashtable JSON;
-	public ArrayList ARRAY;
+	public Dictionary<string,object> JSON;
+	public List<object> ARRAY;
 	public Dictionary<String, String> Data = new Dictionary<String, String>();
 	public List<Playtomic_PlayerLevel> Levels;
 	public List<Playtomic_PlayerScore> Scores;

@@ -29,7 +29,7 @@ carry their own licensing terms and are referenced where applicable.
 #if WWW_SUPPORT
 
 using System;
-using System.Collections;
+using System.Collections.Generic;
 using System.Globalization;
 using System.Text;
 
@@ -40,7 +40,7 @@ using System.Text;
 	/// This class encodes and decodes Playtomic_JSON strings.
 	/// Spec. details, see http://www.json.org/
 	/// 
-	/// Playtomic_JSON uses Arrays and Objects. These correspond here to the datatypes ArrayList and Hashtable.
+	/// Playtomic_JSON uses Arrays and Objects. These correspond here to the datatypes List<object> and Dictionary<string,object>.
 	/// All numbers are parsed to doubles.
 	/// </summary>
 	public class Playtomic_JSON
@@ -72,7 +72,7 @@ using System.Text;
 		/// Parses the string json into a value
 		/// </summary>
 		/// <param name="json">A Playtomic_JSON string.</param>
-		/// <returns>An ArrayList, a Hashtable, a double, a string, null, true, or false</returns>
+		/// <returns>A List<object>, a Dictionary<string,object>, a double, a string, null, true, or false</returns>
 		public static object JsonDecode(string json)
 		{
 			// save the string for debug information
@@ -95,9 +95,9 @@ using System.Text;
 		}
 
 		/// <summary>
-		/// Converts a Hashtable / ArrayList object into a Playtomic_JSON string
+		/// Converts a Dictionary<string,object> / List<object> object into a Playtomic_JSON string
 		/// </summary>
-		/// <param name="json">A Hashtable / ArrayList</param>
+		/// <param name="json">A Dictionary<string,object> / List<object></param>
 		/// <returns>A Playtomic_JSON encoded string, or null if object 'json' is not serializable</returns>
 		public static string JsonEncode(object json)
 		{
@@ -147,9 +147,9 @@ using System.Text;
 			}
 		}
 
-		protected Hashtable ParseObject(char[] json, ref int index)
+		protected Dictionary<string, object> ParseObject(char[] json, ref int index)
 		{
-			Hashtable table = new Hashtable();
+			Dictionary<string, object> table = new Dictionary<string, object>();
 			int token;
 
 			// {
@@ -193,9 +193,9 @@ using System.Text;
 			return table;
 		}
 
-		protected ArrayList ParseArray(char[] json, ref int index)
+		protected List<object> ParseArray(char[] json, ref int index)
 		{
-			ArrayList array = new ArrayList();
+			List<object> array = new List<object>();
 
 			// [
 			NextToken(json, ref index);
@@ -437,22 +437,21 @@ using System.Text;
 
 		protected bool SerializeObjectOrArray(object objectOrArray, StringBuilder builder)
 		{
-			if (objectOrArray is Hashtable) {
-				return SerializeObject((Hashtable)objectOrArray, builder);
-			} else if (objectOrArray is ArrayList) {
-				return SerializeArray((ArrayList)objectOrArray, builder);
+			if (objectOrArray is Dictionary<string,object>) {
+				return SerializeObject((Dictionary<string, object>)objectOrArray, builder);
+			} else if (objectOrArray is List<object>) {
+				return SerializeArray((List<object>)objectOrArray, builder);
 			} else {
 				return false;
 			}
 		}
 
-		protected bool SerializeObject(Hashtable anObject, StringBuilder builder)
+		protected bool SerializeObject(Dictionary<string, object> anObject, StringBuilder builder)
 		{
 			builder.Append("{");
-
-			IDictionaryEnumerator e = anObject.GetEnumerator();
+			
 			bool first = true;
-			while (e.MoveNext()) {
+			foreach (KeyValuePair<string, object> e in anObject) {
 				string key = e.Key.ToString();
 				object value = e.Value;
 
@@ -473,14 +472,12 @@ using System.Text;
 			return true;
 		}
 
-		protected bool SerializeArray(ArrayList anArray, StringBuilder builder)
+		protected bool SerializeArray(List<object> anArray, StringBuilder builder)
 		{
 			builder.Append("[");
 
 			bool first = true;
-			for (int i = 0; i < anArray.Count; i++) {
-				object value = anArray[i];
-
+			foreach (object value in anArray) {
 				if (!first) {
 					builder.Append(", ");
 				}
@@ -500,10 +497,10 @@ using System.Text;
 		{
 			if (value is string) {
 				SerializeString((string)value, builder);
-			} else if (value is Hashtable) {
-				SerializeObject((Hashtable)value, builder);
-			} else if (value is ArrayList) {
-				SerializeArray((ArrayList)value, builder);
+			} else if (value is Dictionary<string, object>) {
+				SerializeObject((Dictionary<string, object>)value, builder);
+			} else if (value is List<object>) {
+				SerializeArray((List<object>)value, builder);
 			} else if (IsNumeric(value)) {
 				SerializeNumber(Convert.ToDouble(value), builder);
 			} else if ((value is Boolean) && ((Boolean)value == true)) {

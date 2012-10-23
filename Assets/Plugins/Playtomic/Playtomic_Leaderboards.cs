@@ -26,6 +26,10 @@ carry their own licensing terms and are referenced where applicable.
 #if UNITY_FLASH
 #undef WWW_SUPPORT
 #endif
+
+// uncomment if you want to expose legacy API
+#define EXPOSE_LEGACY_API
+
 #if WWW_SUPPORT
 
 using UnityEngine;
@@ -72,12 +76,12 @@ public class Playtomic_Leaderboards : Playtomic_Responder
 	
 		if (response.Success)
 		{
-			var data = (Hashtable)response.JSON;
+			var data = (Dictionary<string,object>)response.JSON;
 
-			foreach(string key in data.Keys)
+			foreach(KeyValuePair<string,object> kvp in data)
 			{
-				var name = WWW.UnEscapeURL(key);
-				var value = WWW.UnEscapeURL((string)data[key]);
+				var name = WWW.UnEscapeURL(kvp.Key);
+				var value = WWW.UnEscapeURL((string)kvp.Value);
 				response.Data.Add(name, value);
 			}
 		}
@@ -102,12 +106,12 @@ public class Playtomic_Leaderboards : Playtomic_Responder
 	
 		if (response.Success)
 		{
-			var data = (Hashtable)response.JSON;
+			var data = (Dictionary<string,object>)response.JSON;
 
-			foreach(string key in data.Keys)
+			foreach(KeyValuePair<string,object> kvp in data)
 			{
-				var name = WWW.UnEscapeURL(key);
-				var value = WWW.UnEscapeURL((string)data[key]);
+				var name = WWW.UnEscapeURL(kvp.Key);
+				var value = WWW.UnEscapeURL((string)kvp.Value);
 				response.Data.Add(name, value);
 			}
 		}
@@ -193,7 +197,7 @@ public class Playtomic_Leaderboards : Playtomic_Responder
 	{
 		return SaveAndList(table, score, highest, mode, perpage, isglobal, allowduplicates, false, new Dictionary<string, string>());
 	}
-	
+#if EXPOSE_LEGACY_API	
 	public IEnumerator SaveAndList(string table, Playtomic_PlayerScore score, bool highest, string mode, int perpage, bool isglobal, bool allowduplicates, bool facebook, Hashtable customdatahashtable)
 	{
 		var dict = new Dictionary<String, String>();
@@ -205,7 +209,8 @@ public class Playtomic_Leaderboards : Playtomic_Responder
 		
 		return SaveAndList(table, score, highest, mode, perpage, isglobal, allowduplicates, facebook, dict);
 	}
-	
+#endif // EXPOSE_LEGACY_API
+
 	public IEnumerator SaveAndList(string table, Playtomic_PlayerScore score, bool highest, string mode, int perpage, bool isglobal, bool allowduplicates, bool facebook, Dictionary<String, String> customfilters)
 	{
 		var postdata = new Dictionary<String, String>();
@@ -265,8 +270,8 @@ public class Playtomic_Leaderboards : Playtomic_Responder
 	
 		if (response.Success)
 		{
-			var data = (Hashtable)response.JSON;
-			var scores = (ArrayList)data["Scores"];
+			var data = (Dictionary<string,object>)response.JSON;
+			var scores = (List<object>)data["Scores"];
 			var len = scores.Count;
 			
 			response.NumItems = (int)(double)data["NumScores"];
@@ -274,7 +279,7 @@ public class Playtomic_Leaderboards : Playtomic_Responder
 			
 			for(var i=0; i<len; i++)
 			{
-				Hashtable item = (Hashtable)scores[i];	
+				Dictionary<string,object> item = (Dictionary<string,object>)scores[i];	
 				
 				var sscore = new Playtomic_PlayerScore();
 				sscore.Name = WWW.UnEscapeURL((string)item["Name"]);
@@ -288,10 +293,10 @@ public class Playtomic_Leaderboards : Playtomic_Responder
 
 				if(item.ContainsKey("CustomData"))
 				{
-					Hashtable customdata = (Hashtable)item["CustomData"];
+					Dictionary<string,object> customdata = (Dictionary<string,object>)item["CustomData"];
 	
-					foreach(var key in customdata.Keys)
-						sscore.CustomData.Add((string)key, WWW.UnEscapeURL((string)customdata[key]));
+					foreach(KeyValuePair<string,object> kvp in customdata)
+						sscore.CustomData.Add(kvp.Key, WWW.UnEscapeURL((string)kvp.Value));
 				}
 				
 				response.Scores.Add(sscore);
@@ -310,7 +315,8 @@ public class Playtomic_Leaderboards : Playtomic_Responder
 	{
 		return List(table, highest, mode, page, perpage, facebook, new Dictionary<String, String>(), null);
 	}
-		
+
+#if EXPOSE_LEGACY_API
 	public IEnumerator List(string table, bool highest, string mode, int page, int perpage, bool facebook, Hashtable customdatahashtable)
 	{	
 		var dict = new Dictionary<String, String>();
@@ -322,12 +328,13 @@ public class Playtomic_Leaderboards : Playtomic_Responder
 				
 		return List(table, highest, mode, page, perpage, facebook, dict, null);
 	}
-	
+#endif // EXPOSE_LEGACY_API
+
 	public IEnumerator List(string table, bool highest, string mode, int page, int perpage, bool facebook, Dictionary<String, String> customfilters)
 	{	
 		return List(table, highest, mode, page, perpage, facebook, customfilters, null);
 	}
-	
+#if EXPOSE_LEGACY_API	
 	public IEnumerator List(string table, bool highest, string mode, int page, int perpage, bool facebook, Hashtable customdatahashtable, string[] friendslist)
 	{
 		var dict = new Dictionary<String, String>();
@@ -339,7 +346,7 @@ public class Playtomic_Leaderboards : Playtomic_Responder
 		
 		return List(table, highest, mode, page, perpage, facebook, dict, friendslist);
 	}
-	
+#endif // EXPOSE_LEGACY_API	
 	
 	public IEnumerator List(string table, bool highest, string mode, int page, int perpage, bool facebook, Dictionary<String, String> customfilters, string[] friendslist)
 	{
@@ -391,8 +398,8 @@ public class Playtomic_Leaderboards : Playtomic_Responder
 	
 		if (response.Success)
 		{
-			var data = (Hashtable)response.JSON;
-			var scores = (ArrayList)data["Scores"];
+			var data = (Dictionary<string,object>)response.JSON;
+			var scores = (List<object>)data["Scores"];
 			var len = scores.Count;
 			
 			response.NumItems = (int)(double)data["NumScores"];
@@ -400,7 +407,7 @@ public class Playtomic_Leaderboards : Playtomic_Responder
 			
 			for(var i=0; i<len; i++)
 			{
-				Hashtable item = (Hashtable)scores[i];	
+				Dictionary<string,object> item = (Dictionary<string,object>)scores[i];	
 				
 				var sscore = new Playtomic_PlayerScore();
 				sscore.Name = WWW.UnEscapeURL((string)item["Name"]);
@@ -411,10 +418,10 @@ public class Playtomic_Leaderboards : Playtomic_Responder
 				
 				if(item.ContainsKey("CustomData"))
 				{
-					Hashtable customdata = (Hashtable)item["CustomData"];
+					Dictionary<string,object> customdata = (Dictionary<string,object>)item["CustomData"];
 	
-					foreach(var key in customdata.Keys)
-						sscore.CustomData.Add((string)key, WWW.UnEscapeURL((string)customdata[key]));
+					foreach(KeyValuePair<string,object> kvp in customdata)
+						sscore.CustomData.Add(kvp.Key, WWW.UnEscapeURL((string)kvp.Value));
 				}
 				
 				response.Scores.Add(sscore);

@@ -84,12 +84,12 @@ public class Playtomic_PlayerLevels : Playtomic_Responder
 	
 		if (response.Success)
 		{
-			var data = (Hashtable)response.JSON;
+			var data = (Dictionary<string,object>)response.JSON;
 
-			foreach(string key in data.Keys)
+			foreach(KeyValuePair<string,object> kvp in data)
 			{
-				var name = WWW.UnEscapeURL(key);
-				var value = WWW.UnEscapeURL((string)data[key]);
+				var name = WWW.UnEscapeURL(kvp.Key);
+				var value = WWW.UnEscapeURL((string)kvp.Value);
 				response.Data.Add(name, value);
 			}
 		}
@@ -132,10 +132,10 @@ public class Playtomic_PlayerLevels : Playtomic_Responder
 			
 			if(item.ContainsKey("CustomData"))
 			{
-				Hashtable customdata = (Hashtable)item["CustomData"];
+				Dictionary<string, object> customdata = (Dictionary<string,object>)item["CustomData"];
 	
-				foreach(var key in customdata.Keys)
-					level.CustomData.Add((string)key, WWW.UnEscapeURL((string)customdata[key]));
+				foreach(KeyValuePair<string,object> kvp in customdata)
+					level.CustomData.Add(kvp.Key, WWW.UnEscapeURL((string)kvp.Value));
 			}
 			
 			response.Levels = new List<Playtomic_PlayerLevel>();
@@ -213,8 +213,8 @@ public class Playtomic_PlayerLevels : Playtomic_Responder
 	
 		if (response.Success)
 		{
-			var data = (Hashtable)response.JSON;
-			var levels = (ArrayList)data["Levels"];
+			var data = (Dictionary<string,object>)response.JSON;
+			var levels = (List<object>)data["Levels"];
 			var len = levels.Count;
 			
 			response.NumItems = (int)(double)data["NumLevels"];
@@ -222,7 +222,7 @@ public class Playtomic_PlayerLevels : Playtomic_Responder
 			
 			for(var i=0; i<len; i++)
 			{
-				Hashtable item = (Hashtable)levels[i];	
+				Dictionary<string,object> item = (Dictionary<string,object>)levels[i];	
 				
 				var level = new Playtomic_PlayerLevel();
 				level.LevelId = (string)item["LevelId"];
@@ -241,10 +241,10 @@ public class Playtomic_PlayerLevels : Playtomic_Responder
 				
 				if(item.ContainsKey("CustomData"))
 				{
-					Hashtable cd = (Hashtable)item["CustomData"];
+					Dictionary<string,object> cd = (Dictionary<string,object>)item["CustomData"];
 	
-					foreach(var key in cd)
-						level.CustomData.Add((string)key, WWW.UnEscapeURL((string)cd[key]));
+					foreach(KeyValuePair<string,object> kvp in cd)
+						level.CustomData.Add((string)kvp.Key, WWW.UnEscapeURL((string)kvp.Value));
 				}
 				
 				response.Levels.Add(level);
