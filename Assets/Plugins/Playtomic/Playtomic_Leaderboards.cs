@@ -412,6 +412,7 @@ public class Playtomic_Leaderboards : Playtomic_Responder
 				var sscore = new Playtomic_PlayerScore();
 				sscore.Name = WWW.UnEscapeURL((string)item["Name"]);
 				sscore.Points = long.Parse (item["Points"].ToString());
+				// BUG This fails parsing: Tue Oct 23 2012 10:02:52 GMT+0000 (UTC)
 				sscore.SDate = DateTime.Parse((string)item["SDate"]);
 				sscore.RDate = WWW.UnEscapeURL((string)item["RDate"]);
 				sscore.Rank = long.Parse (item["Rank"].ToString());
