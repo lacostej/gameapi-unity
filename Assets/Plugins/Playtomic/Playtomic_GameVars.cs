@@ -66,11 +66,14 @@ public class Playtomic_GameVars : Playtomic_Responder
 		{
 			var data = (Dictionary<string,object>)response.JSON;
 
-			foreach(KeyValuePair<string,object> kvp in data)
-			{
-				var name = WWW.UnEscapeURL(kvp.Key);
-				var value = WWW.UnEscapeURL((string)kvp.Value);
-				response.Data.Add(name, value);
+			if (data != null) {
+
+				foreach(KeyValuePair<string,object> kvp in data)
+				{
+					var name = WWW.UnEscapeURL(kvp.Key);
+					var value = WWW.UnEscapeURL((string)kvp.Value);
+					response.Data.Add(name, value);
+				}
 			}
 		}
 		
