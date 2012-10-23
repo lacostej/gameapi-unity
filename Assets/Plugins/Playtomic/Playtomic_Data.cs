@@ -296,7 +296,7 @@ public class Playtomic_Data : Playtomic_Responder
 		WWW www = new WWW(url, post);
 		yield return www;
 		
-		Debug.Log(www.text);
+		//Debug.Log(www.text);
 		
 		var response = Playtomic_Request.Process(www);
 	
